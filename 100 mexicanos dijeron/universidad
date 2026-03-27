@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>100 Mexicanos Dijeron — Mini</title>
+<style>
+  :root{
+    --bg:#07142b;
+    --panel:#0f2b4a;
+    --accent:#ffcc00;
+    --card:#1a3b5e;
+    --text:#ffffff;
+    --muted:#cfe6ff;
+  }
+  *{box-sizing:border-box;font-family: "Segoe UI", Roboto, Arial, sans-serif}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg),#081733 60%);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+
+  .app{
+    width:100%;
+    max-width:1000px;
+    background:linear-gradient(180deg,var(--panel),#0b2540);
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(2,6,23,0.7);
+    overflow:hidden;
+  }
+  header{
+    padding:18px 24px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+    border-bottom:1px solid rgba(255,255,255,0.03);
+  }
+  .logo{
+    width:78px;height:46px;
+    background:linear-gradient(90deg,var(--accent),#ffda66);
+    color:#000;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;border-radius:6px;font-size:18px;
+  }
+  h1{font-size:20px;margin:0}
+  .subtitle{color:var(--muted);font-size:13px;margin-top:4px}
+
+  main{display:flex;gap:20px;padding:20px;}
+  .left{flex:1;padding:12px}
+  .right{width:360px;padding:12px;border-left:1px solid rgba(255,255,255,0.03)}
+
+  /* Menu */
+  .questions-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .qcard{
+    background:var(--card);
+    padding:12px;border-radius:8px;
+    cursor:pointer;transition:transform .12s ease, box-shadow .12s;
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .qcard:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(2,6,23,0.6)}
+  .qtitle{font-weight:700}
+  .qmeta{font-size:12px;color:var(--muted)}
+
+  /* Slide */
+  .slide{display:none;flex-direction:column;gap:12px}
+  .slide.active{display:flex}
+  .question-box{
+    background:linear-gradient(90deg,#07263f,#0a3b63);
+    padding:18px;border-radius:10px;
+  }
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .answer{
+    background:#071e33;border-radius:8px;padding:12px;min-height:56px;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    color:var(--muted);font-weight:700;font-size:15px;
+    transform-origin:center;transition:transform .22s ease, opacity .22s;
+    opacity:.25;
+  }
+  .answer.revealed{opacity:1;background:linear-gradient(90deg,#093a4d,#0f6a2d);color:#fff;transform:scale(1.02)}
+  .points{background:rgba(0,0,0,0.18);padding:6px 10px;border-radius:6px;font-weight:800;color:var(--accent)}
+
+  .controls{display:flex;gap:8px;margin-top:12px}
+  button{
+    background:var(--accent);border:0;padding:10px 12px;border-radius:8px;font-weight:800;
+    cursor:pointer;color:#0a0a0a;
+  }
+  .btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+  .back{background:transparent;border:0;color:var(--muted);cursor:pointer}
+
+  /* Info panel */
+  .panel{background:linear-gradient(180deg,#071a2e,#082235);padding:12px;border-radius:8px;color:var(--muted)}
+  .ref a{color:var(--accent);text-decoration:none}
+  footer{padding:12px 18px;border-top:1px solid rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+
+  /* responsive */
+  @media (max-width:900px){
+    main{flex-direction:column}
+    .right{width:100%;border-left:none;border-top:1px solid rgba(255,255,255,0.03);padding-top:18px}
+    .questions-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <div class="app" role="application" aria-label="100 Mexicanos Dijeron - Mini">
+    <header>
+      <div class="logo">100</div>
+      <div>
+        <h1>100 Mexicanos Dijeron — Mini</h1>
+        <div class="subtitle">Juego basado en las lecturas provistas — 5 preguntas</div>
+      </div>
+    </header>
+
+    <main>
+      <div class="left">
+        <!-- MENU -->
+        <section id="menu">
+          <h2 style="margin:0 0 10px 0;color:var(--muted)">Preguntas</h2>
+          <div class="questions-grid" id="questionList">
+            <!-- items by JS -->
+          </div>
+        </section>
+
+        <!-- SLIDES -->
+        <section id="slidesArea" style="margin-top:18px">
+          <!-- each slide created by JS -->
+        </section>
+      </div>
+
+      <aside class="right">
+        <div class="panel">
+          <h3 style="margin-top:0">Lectura / Referencia</h3>
+          <p class="ref" style="font-size:14px;margin:6px 0">
+            Fuente mostrada en la imagen:<br>
+            <strong>Torres, J. (2009). La desmotivación del profesorado. España: Morada.</strong><br>
+            Pp. 31-118.
+          </p>
+          <p style="font-size:14px">También: <br>
+            <a href="https://www.buenosaires.iep.unesco.org/es/publicaciones/nuevos-tiempos-y-nuevos-docentes" target="_blank" rel="noopener">https://www.buenosaires.iep.unesco.org/es/publicaciones/nuevos-tiempos-y-nuevos-docentes</a>
+          </p>
+          <hr style="opacity:.06;margin:12px 0">
+          <p style="font-size:13px;color:var(--muted)">Instrucciones rápidas:</p>
+          <ol style="color:var(--muted);font-size:13px;padding-left:18px">
+            <li>Haz clic en una pregunta para abrir su diapositiva.</li>
+            <li>En la diapositiva, pulsa "Revelar respuesta" para mostrarla una por una.</li>
+            <li>Usa "Volver" para regresar al menú en cualquier momento.</li>
+          </ol>
+          <div style="margin-top:12px">
+            <button id="resetBtn" class="btn-secondary" style="width:100%;">Reiniciar todas las respuestas</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>Plantilla creada para Sublime Text / HTML. Guarda como <strong>index.html</strong> y ábrelo en tu navegador.</footer>
+  </div>
+
+<script>
+/*
+  Datos de preguntas y "respuestas" (simuladas).
+  Basadas en el contenido de las lecturas: desmotivación docente, nuevos docentes, contexto escolar.
+*/
+const preguntas = [
+  {
+    id:1,
+    title: "¿Cuál es una causa frecuente de desmotivación del profesorado?",
+    answers: [
+      {text:"Bajos salarios", points:30},
+      {text:"Falta de reconocimiento", points:25},
+      {text:"Carga administrativa", points:18},
+      {text:"Condiciones laborales (infraestructura)", points:15},
+      {text:"Falta de formación continua", points:12}
+    ]
+  },
+  {
+    id:2,
+    title: "¿Qué puede motivar a un docente a mejorar su práctica?",
+    answers: [
+      {text:"Capacitación y desarrollo",28},
+      {text:"Reconocimiento institucional",24},
+      {text:"Apoyo del equipo directivo",20},
+      {text:"Participación en proyectos",16},
+      {text:"Mejor salario/beneficios",12}
+    ]
+  },
+  {
+    id:3,
+    title: "Según 'Nuevos tiempos y nuevos docentes', ¿qué habilidad es clave hoy?",
+    answers: [
+      {text:"Adaptación a tecnología educativa",30},
+      {text:"Trabajo colaborativo",22},
+      {text:"Comunicación con familias",18},
+      {text:"Diseño de actividades inclusivas",16},
+      {text:"Evaluación formativa",14}
+    ]
+  },
+  {
+    id:4,
+    title: "¿Qué factor externo afecta la motivación docente?",
+    answers: [
+      {text:"Políticas educativas cambiantes",26},
+      {text:"Expectativas sociales y de padres",22},
+      {text:"Recursos económicos limitados",20},
+      {text:"Cambios curriculares frecuentes",18},
+      {text:"Inseguridad en la zona",14}
+    ]
+  },
+  {
+    id:5,
+    title: "¿Qué acción puede reducir la desmotivación en una escuela?",
+    answers: [
+      {text:"Programas de apoyo y mentoría",30},
+      {text:"Espacios de participación docente",24},
+      {text:"Mejorar infraestructura",18},
+      {text:"Políticas de reconocimiento",16},
+      {text:"Incentivos por formación",12}
+    ]
+  }
+];
+
+// Construir menú y slides
+const qList = document.getElementById('questionList');
+const slidesArea = document.getElementById('slidesArea');
+
+preguntas.forEach((p, idx) => {
+  // menu card
+  const card = document.createElement('div');
+  card.className = 'qcard';
+  card.tabIndex = 0;
+  card.setAttribute('role','button');
+  card.innerHTML = `<div class="qtitle">Pregunta ${idx+1}</div>
+                    <div class="qmeta">${p.title.slice(0,70)}${p.title.length>70?'...':''}</div>`;
+  card.addEventListener('click', ()=> openSlide(p.id));
+  card.addEventListener('keypress', (e)=> { if(e.key==='Enter') openSlide(p.id) });
+  qList.appendChild(card);
+
+  // slide
+  const slide = document.createElement('div');
+  slide.className = 'slide';
+  slide.id = 'slide-'+p.id;
+  slide.innerHTML = `
+    <div class="question-box">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:14px;color:var(--muted)">Pregunta ${idx+1}</div>
+          <div style="font-size:20px;font-weight:800;margin-top:8px">${escapeHtml(p.title)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;color:var(--muted)">Respuestas totales</div>
+          <div id="score-${p.id}" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--accent)">0</div>
+        </div>
+      </div>
+
+      <div class="answers" id="answers-${p.id}" style="margin-top:14px">
+        ${p.answers.map((a,i)=>`<div class="answer" data-index="${i}" id="a-${p.id}-${i}">
+          <div class="ans-text">?</div>
+          <div class="points" style="opacity:0">${a.points}</div>
+        </div>`).join('')}
+      </div>
+
+      <div class="controls">
+        <button class="reveal" data-id="${p.id}">Revelar respuesta</button>
+        <button class="btn-secondary back" data-id="${p.id}">Volver</button>
+        <button class="btn-secondary" data-id="${p.id}" style="margin-left:auto" id="revealAll-${p.id}">Revelar todas</button>
+      </div>
+    </div>
+  `;
+  slidesArea.appendChild(slide);
+
+  // attach events later
+});
+
+// Helper open slide
+function openSlide(id){
+  // hide menu visually by scrolling up to slides area and making the slide active
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  const slide = document.getElementById('slide-'+id);
+  if(slide) slide.classList.add('active');
+  // focus first reveal button
+  setTimeout(()=> {
+    const btn = slide.querySelector('.reveal');
+    if(btn) btn.focus();
+  },200);
+  // scroll into view
+  slide.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// Hook reveal buttons
+document.addEventListener('click',(e)=>{
+  const t = e.target;
+  if(t.classList.contains('reveal')){
+    const id = t.dataset.id;
+    revealNext(id);
+  } else if (t.classList.contains('back')){
+    // go to menu
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  } else if (t.id && t.id.startsWith('revealAll-')){
+    const id = t.id.split('-')[1];
+    revealAll(id);
+  } else if (t.id === 'resetBtn'){
+    resetAll();
+  }
+});
+
+// Reveal logic
+function revealNext(id){
+  const answersWrap = document.getElementById('answers-'+id);
+  const answers = answersWrap.querySelectorAll('.answer');
+  let next = null;
+  for(const a of answers){
+    if(!a.classList.contains('revealed')) { next = a; break; }
+  }
+  if(!next) return;
+  // reveal it
+  const idx = next.dataset.index;
+  const p = preguntas.find(x=>x.id==id);
+  next.querySelector('.ans-text').textContent = p.answers[idx].text;
+  next.querySelector('.points').style.opacity = '1';
+  next.classList.add('revealed');
+  // update score
+  updateScore(id);
+}
+
+function revealAll(id){
+  const answersWrap = document.getElementById('answers-'+id);
+  const answers = answersWrap.querySelectorAll('.answer');
+  const p = preguntas.find(x=>x.id==id);
+  answers.forEach((a)=>{
+    const idx = a.dataset.index;
+    a.querySelector('.ans-text').textContent = p.answers[idx].text;
+    a.querySelector('.points').style.opacity = '1';
+    a.classList.add('revealed');
+  });
+  updateScore(id);
+}
+
+function updateScore(id){
+  const answersWrap = document.getElementById('answers-'+id);
+  const revealed = answersWrap.querySelectorAll('.answer.revealed');
+  let sum = 0;
+  revealed.forEach(r=>{
+    const pts = parseInt(r.querySelector('.points').textContent || '0',10);
+    sum += pts;
+  });
+  const scEl = document.getElementById('score-'+id);
+  scEl.textContent = sum;
+}
+
+// Reset
+function resetAll(){
+  document.querySelectorAll('.answer').forEach(a=>{
+    a.classList.remove('revealed');
+    const idx = a.dataset.index;
+    a.querySelector('.ans-text').textContent = '?';
+    a.querySelector('.points').style.opacity = '0';
+  });
+  document.querySelectorAll('[id^="score-"]').forEach(s => s.textContent = '0');
+  // go back to top
+  document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Utility: escape HTML
+function escapeHtml(text){
+  const map = { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#039;"};
+  return text.replace(/[&<>"']/g, function(m){ return map[m]; });
+}
+
+// Initialize: show nothing (menu visible). Optionally open first slide if you want:
+// openSlide(1);
+</script>
+</body>
+</html>

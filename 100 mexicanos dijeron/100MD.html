@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 Mexicanos Dijeron</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: url('fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-align: center;
+  }
+
+  /* BOTÓN DE PANTALLA COMPLETA */
+  #btnFull {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 10px 15px;
+    border: 2px solid white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  header img {
+    width: 280px;
+    margin-top: 15px;
+  }
+
+  #marcador {
+    background: linear-gradient(180deg, #00296b, #003f88);
+    border: 4px solid #00b4d8;
+    width: 180px;
+    margin: 10px auto;
+    border-radius: 10px;
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffcd00;
+    box-shadow: 0 0 20px #00b4d8;
+    padding: 10px;
+  }
+
+  .bloque-pregunta {
+    background: linear-gradient(90deg, #003049, #023e8a);
+    color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+    width: 80%;
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.3s;
+    box-shadow: 0 0 10px #90e0ef;
+  }
+
+  .bloque-pregunta:hover {
+    background: linear-gradient(90deg, #0077b6, #03045e);
+  }
+
+  .juego {
+    display: none;
+  }
+
+  .activo {
+    display: block;
+  }
+
+  .tablero {
+    background: linear-gradient(180deg, #023e8a, #03045e);
+    border: 4px solid #00b4d8;
+    border-radius: 15px;
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 30px #0077b6 inset;
+  }
+
+  .respuesta {
+    background: #14213d;
+    margin: 10px auto;
+    width: 70%;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #ffcd00;
+    display: none;
+    border: 2px solid #00b4d8;
+    box-shadow: 0 0 10px #00b4d8;
+  }
+
+  .botones-opciones button {
+    background: linear-gradient(90deg, #ff6a00, #ffb703);
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+
+  .botones-opciones button:hover {
+    background: linear-gradient(90deg, #ffb703, #ff6a00);
+  }
+
+  .volver {
+    background: #9d0208;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .volver:hover {
+    background: #d00000;
+  }
+
+  h2 {
+    text-shadow: 0 0 10px #00b4d8;
+  }
+</style>
+</head>
+<body>
+
+<!-- BOTÓN DE PANTALLA COMPLETA -->
+<button id="btnFull">Pantalla completa</button>
+
+<header>
+  <img src="titulo.jpg" alt="100 Mexicanos Dijeron">
+</header>
+
+<div id="marcador">0</div>
+
+<div id="inicio" class="activo">
+  <div class="bloque-pregunta" onclick="abrirJuego(1)">1️⃣ ¿Cuál es una de las principales causas de la desmotivación del profesorado?</div>
+  <div class="bloque-pregunta" onclick="abrirJuego(2)">2️⃣ ¿Qué consecuencias genera la desmotivación en el aula?</div>
+  <div class="bloque-pregunta" onclick="abrirJuego(3)">3️⃣ ¿Qué propone el autor para recuperar la motivación docente?</div>
+  <div class="bloque-pregunta" onclick="abrirJuego(4)">4️⃣ Según el texto, ¿qué refleja un profesorado desmotivado?</div>
+  <div class="bloque-pregunta" onclick="abrirJuego(5)">5️⃣ ¿Qué actitud deben mantener los docentes en el aula?</div>
+</div>
+
+<div id="juego1" class="juego">
+  <h2>¿Cuál es una de las principales causas de la desmotivación del profesorado?</h2>
+  <div class="tablero">
+    <div class="respuesta" id="r1-1">📋 Exceso de trabajo administrativo - 35 pts</div>
+    <div class="respuesta" id="r1-2">🏫 Escaso apoyo institucional - 25 pts</div>
+    <div class="respuesta" id="r1-3">😔 Falta de reconocimiento social - 15 pts</div>
+  </div>
+  <div class="botones-opciones">
+
+    <!-- 🔥 ORDEN CAMBIADO -->
+    <button onclick="mostrarRespuesta(1,'Falta de materiales',0)">Falta de materiales</button>
+    <button onclick="mostrarRespuesta(1,'Exceso de trabajo administrativo',35)">Exceso de trabajo administrativo</button>
+    <button onclick="mostrarRespuesta(1,'Cambios en los planes de estudio',0)">Cambios en los planes de estudio</button>
+    <button onclick="mostrarRespuesta(1,'Escaso apoyo institucional',25)">Escaso apoyo institucional</button>
+    <button onclick="mostrarRespuesta(1,'Falta de vocación',0)">Falta de vocación</button>
+    <button onclick="mostrarRespuesta(1,'Falta de reconocimiento social',15)">Falta de reconocimiento social</button>
+
+  </div>
+  <button class="volver" onclick="volverInicio()">⬅️ Volver</button>
+</div>
+
+
+<!-- JUEGO 2 -->
+<div id="juego2" class="juego">
+  <h2>¿Qué consecuencias genera la desmotivación en el aula?</h2>
+  <div class="tablero">
+    <div class="respuesta" id="r2-1">😐 Ambiente tenso o aburrido - 25 pts</div>
+    <div class="respuesta" id="r2-2">💡 Disminución de la creatividad - 30 pts</div>
+    <div class="respuesta" id="r2-3">💔 Falta de empatía con los alumnos - 20 pts</div>
+  </div>
+  <div class="botones-opciones">
+
+    <!-- 🔥 ORDEN NUEVO -->
+    <button onclick="mostrarRespuesta(2,'Mayor entusiasmo',0)">Mayor entusiasmo</button>
+    <button onclick="mostrarRespuesta(2,'Disminución de la creatividad',30)">Disminución de la creatividad</button>
+    <button onclick="mostrarRespuesta(2,'Más innovación',0)">Más innovación</button>
+    <button onclick="mostrarRespuesta(2,'Ambiente tenso o aburrido',25)">Ambiente tenso o aburrido</button>
+    <button onclick="mostrarRespuesta(2,'Mejor comunicación',0)">Mejor comunicación</button>
+    <button onclick="mostrarRespuesta(2,'Falta de empatía con los alumnos',20)">Falta de empatía con los alumnos</button>
+
+  </div>
+  <button class="volver" onclick="volverInicio()">⬅️ Volver</button>
+</div>
+
+
+<!-- JUEGO 3 -->
+<div id="juego3" class="juego">
+  <h2>¿Qué propone el autor para recuperar la motivación docente?</h2>
+  <div class="tablero">
+    <div class="respuesta" id="r3-1">🧠 Fomentar la autonomía docente - 30 pts</div>
+    <div class="respuesta" id="r3-2">👥 Crear ambientes colaborativos - 20 pts</div>
+    <div class="respuesta" id="r3-3">📚 Promover la formación continua - 25 pts</div>
+  </div>
+  <div class="botones-opciones">
+
+    <!-- 🔥 ORDEN NUEVO -->
+    <button onclick="mostrarRespuesta(3,'Evitar el trabajo en equipo',0)">Evitar el trabajo en equipo</button>
+    <button onclick="mostrarRespuesta(3,'Promover la formación continua',25)">Promover la formación continua</button>
+    <button onclick="mostrarRespuesta(3,'Aumentar la burocracia',0)">Aumentar la burocracia</button>
+    <button onclick="mostrarRespuesta(3,'Crear ambientes colaborativos',20)">Crear ambientes colaborativos</button>
+    <button onclick="mostrarRespuesta(3,'Reducir la participación docente',0)">Reducir la participación docente</button>
+    <button onclick="mostrarRespuesta(3,'Fomentar la autonomía docente',30)">Fomentar la autonomía docente</button>
+
+  </div>
+  <button class="volver" onclick="volverInicio()">⬅️ Volver</button>
+</div>
+
+
+<!-- JUEGO 4 -->
+<div id="juego4" class="juego">
+  <h2>Según el texto, ¿qué refleja un profesorado desmotivado?</h2>
+  <div class="tablero">
+    <div class="respuesta" id="r4-1">🏫 Una escuela que no valora la tarea de enseñar - 40 pts</div>
+    <div class="respuesta" id="r4-2">📉 Un bajo nivel educativo - 10 pts</div>
+    <div class="respuesta" id="r4-3">💬 Falta de reconocimiento profesional - 20 pts</div>
+  </div>
+  <div class="botones-opciones">
+
+    <!-- 🔥 ORDEN NUEVO -->
+    <button onclick="mostrarRespuesta(4,'Una escuela innovadora',0)">Una escuela innovadora</button>
+    <button onclick="mostrarRespuesta(4,'Un bajo nivel educativo',10)">Un bajo nivel educativo</button>
+    <button onclick="mostrarRespuesta(4,'Un sistema exitoso',0)">Un sistema exitoso</button>
+    <button onclick="mostrarRespuesta(4,'Falta de reconocimiento profesional',20)">Falta de reconocimiento profesional</button>
+    <button onclick="mostrarRespuesta(4,'Docentes felices',0)">Docentes felices</button>
+    <button onclick="mostrarRespuesta(4,'Una escuela que no valora la tarea de enseñar',40)">Una escuela que no valora la tarea de enseñar</button>
+
+  </div>
+  <button class="volver" onclick="volverInicio()">⬅️ Volver</button>
+</div>
+
+
+<!-- JUEGO 5 -->
+<div id="juego5" class="juego">
+  <h2>¿Qué actitud deben mantener los docentes en el aula?</h2>
+  <div class="tablero">
+    <div class="respuesta" id="r5-1">🎨 Actitud positiva y creativa - 25 pts</div>
+    <div class="respuesta" id="r5-2">🤝 Aprendizaje colaborativo y diálogo - 20 pts</div>
+    <div class="respuesta" id="r5-3">📖 Buscar la autoformación - 25 pts</div>
+  </div>
+  <div class="botones-opciones">
+
+    <!-- 🔥 ORDEN NUEVO -->
+    <button onclick="mostrarRespuesta(5,'Centrarse solo en contenidos',0)">Centrarse solo en contenidos</button>
+    <button onclick="mostrarRespuesta(5,'Actitud positiva y creativa',25)">Actitud positiva y creativa</button>
+    <button onclick="mostrarRespuesta(5,'Postura indiferente',0)">Postura indiferente</button>
+    <button onclick="mostrarRespuesta(5,'Aprendizaje colaborativo y diálogo',20)">Aprendizaje colaborativo y diálogo</button>
+    <button onclick="mostrarRespuesta(5,'Aislarse de compañeros',0)">Aislarse de compañeros</button>
+    <button onclick="mostrarRespuesta(5,'Buscar la autoformación',25)">Buscar la autoformación</button>
+
+  </div>
+  <button class="volver" onclick="volverInicio()">⬅️ Volver</button>
+</div>
+
+<script>
+let puntos = 0;
+
+function abrirJuego(num) {
+  document.getElementById("inicio").classList.remove("activo");
+  document.getElementById("juego" + num).classList.add("activo");
+}
+
+function volverInicio() {
+  document.querySelectorAll(".juego").forEach(div => div.classList.remove("activo"));
+  document.getElementById("inicio").classList.add("activo");
+}
+
+function mostrarRespuesta(pregunta, texto, puntosGanados) {
+  const respuestas = {
+    1: { "Exceso de trabajo administrativo":"r1-1", "Escaso apoyo institucional":"r1-2", "Falta de reconocimiento social":"r1-3" },
+    2: { "Ambiente tenso o aburrido":"r2-1", "Disminución de la creatividad":"r2-2", "Falta de empatía con los alumnos":"r2-3" },
+    3: { "Fomentar la autonomía docente":"r3-1", "Crear ambientes colaborativos":"r3-2", "Promover la formación continua":"r3-3" },
+    4: { "Una escuela que no valora la tarea de enseñar":"r4-1", "Un bajo nivel educativo":"r4-2", "Falta de reconocimiento profesional":"r4-3" },
+    5: { "Actitud positiva y creativa":"r5-1", "Aprendizaje colaborativo y diálogo":"r5-2", "Buscar la autoformación":"r5-3" }
+  };
+
+  const id = respuestas[pregunta][texto];
+  if (id) {
+    document.getElementById(id).style.display = "block";
+    sumarPuntos(puntosGanados);
+  } else {
+    alert("❌ Esa respuesta no está en el tablero");
+  }
+}
+
+function sumarPuntos(cantidad) {
+  let marcador = document.getElementById("marcador");
+  let actual = parseInt(marcador.textContent);
+  let incremento = 0;
+  let intervalo = setInterval(() => {
+    if (incremento < cantidad) {
+      actual++;
+      incremento++;
+      marcador.textContent = actual;
+    } else {
+      clearInterval(intervalo);
+    }
+  }, 50);
+}
+</script>
+
+<!-- SCRIPT PARA PANTALLA COMPLETA -->
+<script>
+document.getElementById("btnFull").addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.fullscreenElement) {
+    document.exitFullscreen();
+  }
+});
+</script>
+
+</body>
+</html>
